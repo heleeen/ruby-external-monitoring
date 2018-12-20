@@ -6,7 +6,7 @@ def notify_slack(webhook_url, message)
   uri  = URI.parse(webhook_url) # SHOULD read config
   http = Net::HTTP.new(uri.host, uri.port)
   http.use_ssl = true
-  messages = { text: message }.to_json
+  messages = { attachments: [{ color: "danger", fields: [{ title: "ExternalMonitoring", value: message}] }] }.to_json
 
   http.start do
     request = Net::HTTP::Post.new(uri.request_uri)
