@@ -1,7 +1,7 @@
 require 'socket'
 require 'openssl'
 
-class Request
+class HttpsResponse
   def initialize(host)
     TCPSocket.open(host, 443) do |socket|
       ssl_socket = OpenSSL::SSL::SSLSocket.new(socket)
