@@ -17,26 +17,16 @@ class ExternalMonitoring
     basicMonitoring = HttpResponse.new(@urls)
     sslMonitoring = HttpsResponse.new(@uri)
 
-    basic_check(basicMonitoring)
-    ssl_check(sslMonitoring)
-  end
-
-  def basic_check(request) # TODO implements
-    check_status(request.status_code)
-    check_response_time(request.response_time)
-  end
-
-  def ssl_check(request) # TODO implements
-    check_certificate_valid(request)
+    exe_check_metrics(basicMonitoring, sslMonitoring)
   end
 
   private
-    def check_certificate_valid(request)
-      if check(request)
-        # TODO fix notification
-        notify_slack(@webhook_url, 'certificate is vaild')
-      else
-        notify_slack(@webhook_url, 'certificate is not valid')
-      end
+
+    # TODO implements
+    def exe_check_metrics(basicMonitoring, sslMonitoring)
+      notify_slack(@webhook_url, 'status code is not valid') if !check_status(basicMonitoring.status_code)
+      notify_slack(@webhook_url, 'responsetime is not valid') if !check_response_time(basicMonitoring.response_time)
+      notify_slack(@webhook_url, 'certificate is not valid') if !check_expired(sslMonitoring)
     end
+
 end
